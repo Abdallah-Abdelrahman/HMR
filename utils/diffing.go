@@ -68,7 +68,7 @@ func compareTrees(oldElem, newElem *goquery.Selection) (string, string) {
 			// Deletion detected
 			fmt.Println("Deletion detected!")
 			selector := generateSelector(oldElem)
-			fragment, _ := goquery.OuterHtml(oldChildren.Parent()) // Old child deleted
+			fragment, _ := goquery.OuterHtml(newChildren.Parent()) // Old child deleted
 			return selector, fragment
 		}
 	}
