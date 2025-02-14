@@ -11,7 +11,8 @@
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            console.log(data);
+            console.log(data.selector);
+            console.log(data.fragment);
         };
 
         //function send() {
