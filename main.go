@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 )
@@ -18,8 +19,15 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+	var appDir string
+
+	if len(os.Args) < 2 {
+		log.Fatal("Please provide the directory of the app to watch")
+	}
+
+	appDir = os.Args[1]
 	// Start watching files for changes
-	go utils.WatchFiles([]string{"ws.html"}, func(a, b, c string) {})
+	go utils.WatchFiles(utils.ExtractHTMLFiles(appDir), func(a, b, c string) {})
 
 	// Start the websocket server
 	fmt.Println("Websocket server started on localhost:8080/ws")
