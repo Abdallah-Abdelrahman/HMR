@@ -9,11 +9,11 @@ import (
 )
 
 type File struct {
-	oldContent string
-	newContent string
+	oldTree string
+	newTree string
 }
 
-var CONTENT = make(map[string]*File)
+var DOM = make(map[string]*File)
 
 // Detect changes between old and new content in a slice of watched files
 func WatchFiles(files []string, callback func(string, string, string)) {
@@ -36,16 +36,16 @@ func WatchFiles(files []string, callback func(string, string, string)) {
 					continue
 				}
 
-				if CONTENT[file] == nil {
-					CONTENT[file] = &File{}
+				if DOM[file] == nil {
+					DOM[file] = &File{}
 				}
 
-				CONTENT[file].newContent = string(content)
-				if CONTENT[file].oldContent != "" {
-					// Compare old and new content
+				DOM[file].newTree = string(content)
+				if DOM[file].oldTree != "" {
+					// Compare old and new DOM
 					selector, fragment := DetectChanges(
-						CONTENT[file].oldContent,
-						CONTENT[file].newContent,
+						DOM[file].oldTree,
+						DOM[file].newTree,
 					)
 					fmt.Printf("Selector: %s\nFragment: %s\n", selector, fragment)
 					if selector != "" && fragment != "" {
@@ -53,7 +53,7 @@ func WatchFiles(files []string, callback func(string, string, string)) {
 					}
 				}
 
-				CONTENT[file].oldContent = CONTENT[file].newContent // Update old content
+				DOM[file].oldTree = DOM[file].newTree // Update old DOM
 			}
 		}
 		time.Sleep(2 * time.Second) // Check every 2 seconds

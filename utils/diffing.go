@@ -60,13 +60,15 @@ func compareTrees(oldElem, newElem *goquery.Selection) (string, string) {
 		fmt.Printf("Difference in number of children: old=%d, new=%d\n", oldLen, newLen)
 		if newLen > oldLen {
 			// Insertion detected
+			fmt.Println("Insertion detected!")
 			selector := generateSelector(oldElem)
-			fragment, _ := goquery.OuterHtml(newChildren.Eq(oldLen)) // New child added
+			fragment, _ := goquery.OuterHtml(newChildren.Parent()) // New child added
 			return selector, fragment
 		} else {
 			// Deletion detected
+			fmt.Println("Deletion detected!")
 			selector := generateSelector(oldElem)
-			fragment, _ := goquery.OuterHtml(oldChildren.Eq(newLen)) // Old child deleted
+			fragment, _ := goquery.OuterHtml(oldChildren.Parent()) // Old child deleted
 			return selector, fragment
 		}
 	}
