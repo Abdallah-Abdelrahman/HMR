@@ -37,14 +37,6 @@ func compareTrees(oldElem, newElem *goquery.Selection) (string, string) {
 		return selector, fragment
 	}
 
-	// Compare text content
-	if oldElem.Text() != newElem.Text() {
-		selector := generateSelector(oldElem)
-		fragment, _ := goquery.OuterHtml(newElem)
-		fmt.Println("Text content difference detected")
-		return selector, fragment
-	}
-
 	// Compare attributes
 	oldAttrs := getAttributesMap(oldElem)
 	newAttrs := getAttributesMap(newElem)
@@ -88,6 +80,13 @@ func compareTrees(oldElem, newElem *goquery.Selection) (string, string) {
 		}
 	}
 
+	// Compare text content
+	if oldElem.Text() != newElem.Text() {
+		selector := generateSelector(oldElem)
+		fragment, _ := goquery.OuterHtml(newElem)
+		fmt.Println("Text content difference detected")
+		return selector, fragment
+	}
 	return "", ""
 }
 
@@ -122,7 +121,6 @@ func generateSelector(elem *goquery.Selection) string {
 	}
 
 	if class, exists := elem.Attr("class"); exists {
-		fmt.Println("Class:", class)
 		classes := strings.Split(class, " ")
 		for _, className := range classes {
 			selector += fmt.Sprintf(".%s", className)
