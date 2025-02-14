@@ -114,19 +114,54 @@ func compareAttributes(oldAttrs, newAttrs map[string]string) bool {
 	return true
 }
 
-// Helper function to generate a CSS selector for an element
+// Helper function to generate a fine-grained CSS selector for an element
 func generateSelector(elem *goquery.Selection) string {
 	selector := goquery.NodeName(elem)
 
+	// Add ID if it exists
 	if id, exists := elem.Attr("id"); exists {
 		selector += fmt.Sprintf("#%s", id)
 	}
 
+	// Add classes if they exist
 	if class, exists := elem.Attr("class"); exists {
 		classes := strings.Split(class, " ")
 		for _, className := range classes {
 			selector += fmt.Sprintf(".%s", className)
 		}
+	}
+
+	// Special handling for list items (li) or similar elements
+	// Add nth-child for finer granularity
+	if selector == "li" || selector == "div" || selector == "span" {
+		// Find the position of the element among its siblings
+		parent := elem.Parent()
+		allSiblings := parent.ChildrenFiltered(goquery.NodeName(elem)) // Find all siblings with the same tag
+		for i := 0; i < allSiblings.Length(); i++ {
+			if allSiblings.Eq(i).Get(0) == elem.Get(0) {
+				// We use nth-child to represent its index in the parent
+				selector += fmt.Sprintf(":nth-child(%d)", i+1)
+				break
+			}
+		}
+	}
+
+	// Add parent selectors for more specificity
+	for parent := elem.Parent(); parent.Length() > 0 && goquery.NodeName(parent) != "html" && goquery.NodeName(parent) != "body"; parent = parent.Parent() {
+		parentSelector := goquery.NodeName(parent)
+		if id, exists := parent.Attr("id"); exists {
+			parentSelector += fmt.Sprintf("#%s", id)
+		}
+
+		if class, exists := parent.Attr("class"); exists {
+			classes := strings.Split(class, " ")
+			for _, className := range classes {
+				parentSelector += fmt.Sprintf(".%s", className)
+			}
+		}
+
+		// Prepend parent selector to the current selector
+		selector = parentSelector + " > " + selector
 	}
 
 	return selector
