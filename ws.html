@@ -1,23 +1,11 @@
 <!-- websockets.html -->
 <body>
-    <h1 id='output'></h1>
     <script>
-        var output = document.getElementById("output");
-        var socket = new WebSocket("ws://localhost:8080/ws");
-
-        socket.onopen = function () {
-            output.innerHTML += "Status: Connected\n";
-        };
+        const socket = new WebSocket("ws://localhost:8080/ws");
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            console.log(data.selector);
-            console.log(data.fragment);
+            document.querySelector(data.selector).outerHTML = data.fragment;
         };
-
-        //function send() {
-        //    socket.send(input.value);
-        //    input.value = "";
-        //}
     </script>
 </body>
