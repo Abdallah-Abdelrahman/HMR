@@ -1,25 +1,22 @@
 <!-- websockets.html -->
 <body>
-    <input name='name' class='text-black mx-auto'  id="input" type="text" />
-    <button id='btn' type='submit' onclick="send()">Send</button>
-    <br>
-    <pre id="output"></pre>
-<script>
-    var input = document.getElementById("input");
-    var output = document.getElementById("output");
-    var socket = new WebSocket("ws://localhost:8080/ws");
+    <h1 id='output'></h1>
+    <script>
+        var output = document.getElementById("output");
+        var socket = new WebSocket("ws://localhost:8080/ws");
 
-    socket.onopen = function () {
-        output.innerHTML += "Status: Connected\n";
-    };
+        socket.onopen = function () {
+            output.innerHTML += "Status: Connected\n";
+        };
 
-    socket.onmessage = function (e) {
-        output.innerHTML += "Server: " + e.data + "\n";
-    };
+        socket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+        };
 
-    function send() {
-        socket.send(input.value);
-        input.value = "";
-    }
-</script>
+        //function send() {
+        //    socket.send(input.value);
+        //    input.value = "";
+        //}
+    </script>
 </body>
