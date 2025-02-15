@@ -9,5 +9,7 @@ working with markup files (html, etc..) that are not using any framework like Re
 - run `go mod tidy`
 
 ## How to use HMR
-- run `go run main.go <path-to-dir-where-your-html-files-are>`.
+- build  the binary by running `go build -o hmr`
+- make `symlink` to the binary by running `ln -s hmr /usr/local/bin/hmr`
+- run the binary from anywhere in your file system `hmr <path-to-dir-where-your-html-files-are>`.
 - put this [script](ws.html) in your html file.
