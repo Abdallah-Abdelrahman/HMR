@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"time"
 )
 
@@ -16,7 +17,7 @@ type File struct {
 var DOM = make(map[string]*File)
 
 // Detect changes between old and new content in a slice of watched files
-func WatchFiles(files []string, callback func(string, string, string)) {
+func WatchFiles(files []string, notify func(string, string, string)) {
 	lastModTimes := make(map[string]time.Time)
 
 	for {
@@ -41,16 +42,26 @@ func WatchFiles(files []string, callback func(string, string, string)) {
 				}
 
 				DOM[file].newTree = string(content)
+				r := regexp.MustCompile(`(js|css)`)
+
 				if DOM[file].oldTree != "" {
-					// Compare old and new DOM
-					selector, fragment := DetectChanges(
-						DOM[file].oldTree,
-						DOM[file].newTree,
-					)
-					fmt.Printf("Selector: %s\nFragment: %s\n", selector, fragment)
-					if selector != "" && fragment != "" {
-						callback(file, selector, fragment) // Notify clients of the change
+					if !r.MatchString(filepath.Ext(file)) {
+						// it's an HTML file
+						// Compare old and new DOM
+						selector, fragment := DetectChanges(
+							DOM[file].oldTree,
+							DOM[file].newTree,
+						)
+						fmt.Printf("Selector: %s\nFragment: %s\n", selector, fragment)
+						if selector != "" && fragment != "" {
+							notify(file, selector, fragment) // Notify clients of the change
+						}
+					} else {
+						// it's a CSS or JS file
+						fmt.Printf("File %s has changed.\n", file)
+						notify(file, "", "") // Notify clients of the change
 					}
+
 				}
 
 				DOM[file].oldTree = DOM[file].newTree // Update old DOM
@@ -70,8 +81,9 @@ func ExtractHTMLFiles(rootDir string) []string {
 			return err // Handle errors (e.g., permission issues)
 		}
 
+		r := regexp.MustCompile(`(html|css|js)$`)
 		// Check if the file has a .html extension
-		if !info.IsDir() && filepath.Ext(path) == ".html" {
+		if !info.IsDir() && r.MatchString(filepath.Ext(path)) {
 			fmt.Println("Found HTML file:", path)
 			htmlFiles = append(htmlFiles, path)
 		}
