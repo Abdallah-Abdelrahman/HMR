@@ -10,6 +10,6 @@ working with markup files (html, etc..) that are not using any framework like Re
 
 ## How to use HMR
 - build  the binary by running `go build -o hmr`
-- make `symlink` to the binary by running `ln -s hmr /usr/local/bin/hmr`
+- make `symlink` to the binary by running `ln -s <project-absolute-path>/hmr /usr/local/bin/hmr`
 - run the binary from anywhere in your file system `hmr <path-to-dir-where-your-(html|css|js)-files-are>`.
 - put this [script](ws.html) in your html file.
