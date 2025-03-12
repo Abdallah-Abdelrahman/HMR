@@ -108,7 +108,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
 
-		if err := conn.WriteMessage(msgType, []byte(fmt.Sprintf("Server successfully recieved %s", msg))); err != nil {
+		if err := conn.WriteMessage(msgType, fmt.Appendf(nil, "Server successfully received %s", msg)); err != nil {
 			log.Println("WriteMessage error:", err)
 			break
 		}
