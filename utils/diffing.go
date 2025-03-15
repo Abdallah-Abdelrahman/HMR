@@ -74,7 +74,7 @@ func compareTrees(oldElem, newElem *goquery.Selection) (string, string) {
 	}
 
 	// Continue DFS on each child
-	for i := 0; i < oldLen; i++ {
+	for i := range oldLen {
 		selector, fragment := compareTrees(oldChildren.Eq(i), newChildren.Eq(i))
 		if selector != "" && fragment != "" {
 			// Return the first detected change
@@ -137,7 +137,7 @@ func generateSelector(elem *goquery.Selection) string {
 		// Find the position of the element among its siblings
 		parent := elem.Parent()
 		allSiblings := parent.ChildrenFiltered(goquery.NodeName(elem)) // Find all siblings with the same tag
-		for i := 0; i < allSiblings.Length(); i++ {
+		for i := range allSiblings.Length() {
 			if allSiblings.Eq(i).Get(0) == elem.Get(0) {
 				// We use nth-child to represent its index in the parent
 				selector += fmt.Sprintf(":nth-child(%d)", i+1)
