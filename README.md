@@ -1,15 +1,39 @@
-# HMR (Hot module replacement)
+# HMR (Hot Module Replacement)
 
-Is a feature to update the application in real time without refreshing the browser. the project is written specifically for developers
-working with markup files (html, etc..) that are not using any framework like React, Angular, Vue, etc.
+HMR is a lightweight tool that updates your browser in real-time without requiring a page refresh.
 
-## Installation:
-- clone the repo
-- navigate to the project's directory
-- run `go mod tidy`
+## Motivation
 
-## How to use HMR
-- build  the binary by running `go build -o hmr`
-- make `symlink` to the binary by running `ln -s <project-absolute-path>/hmr /usr/local/bin/hmr`
-- run the binary from anywhere in your file system `hmr <path-to-dir-where-your-(html|css|js)-files-are>`.
-- put this [script](ws.html) in your html file.
+When working on projects that do not use UI libraries like React or Vue—which come with built-in Hot Module Replacement—developers often miss out on the benefits of live updates. While tools like [browser-sync](https://www.npmjs.com/package/browser-sync) offer similar functionality, they can be resource-intensive and heavy on system memory. HMR was created as a lean alternative to speed up development by instantly reflecting UI changes without the overhead.
+
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Abdallah-Abdelrahman/HMR
+   ```
+2. **Navigate to the project directory:**
+   ```bash
+   cd HMR
+   ```
+3. **Install dependencies:**
+   ```bash
+   go mod tidy
+   ```
+
+## Usage
+
+1. **Build the static binary:**
+   ```bash
+   make build-static
+   ```
+2. **Create a symlink to the binary:**
+   ```bash
+   sudo ln -s <project-absolute-path>/bin/hmr /usr/local/bin/hmr
+   ```
+3. **Run HMR from anywhere:**
+   ```bash
+   hmr <path-to-directory-containing-html|css|js-files>
+   ```
+4. **Embed the client-side script:**  
+   Include this [script](ws.html) in your HTML file to enable live updates.
