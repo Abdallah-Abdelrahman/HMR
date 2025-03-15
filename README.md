@@ -10,7 +10,7 @@ When working on projects that do not use UI libraries like React or Vue—which 
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Abdallah-Abdelrahman/HMR
+   git clone https://github.com/Abdallah-Abdelrahman/HMR.git
    ```
 2. **Navigate to the project directory:**
    ```bash
