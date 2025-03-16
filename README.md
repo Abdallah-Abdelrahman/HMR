@@ -2,8 +2,10 @@
 
 HMR is a lightweight tool that updates your browser in real-time without requiring a page refresh.
 
-<a href="https://ibb.co/4Rf7fMXW"><img width='100%' src="https://i.ibb.co/GQJ0Jk87/output.gif" alt="output" border="0"></a>
+<img width='100%' src="https://imgur.com/XRHmexz.gif">
 
+
+---
 ## Motivation
 
 When working on projects that do not use UI libraries like React or Vue—which come with built-in Hot Module Replacement—developers often miss out on the benefits of live updates. While tools like [browser-sync](https://www.npmjs.com/package/browser-sync) offer similar functionality, they can be resource-intensive and heavy on system memory. HMR was created as a lean alternative to speed up development by instantly reflecting UI changes without the overhead.
